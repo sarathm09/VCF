@@ -1,3 +1,14 @@
+*.vcf
+*.csv
+*.ics
+*.jpg
+*.png
+*.exe
+*.apk
+*.dll
+*.txt
+
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

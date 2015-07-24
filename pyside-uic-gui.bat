@@ -1,0 +1,1 @@
+C:\Python27\Scripts\pyside-uic.exe gui.ui -o ui.py
