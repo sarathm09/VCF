@@ -1,9 +1,9 @@
 ('D:\\2015\\July\\VCF\\src\\dist\\main.exe',
  True,
  False,
- None,
+ 'ico.ico',
  None,
  [],
  None,
  False,
- 1437847591L)
+ 1437848549L)
