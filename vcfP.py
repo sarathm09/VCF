@@ -178,70 +178,75 @@ class vcfManager:
 
     def saveVCF(self, data, fileName):
         op = open(fileName, "w")
-        order = [3, 1, 2, 0]
-        for u in data:
-            FN = "FN:" + u['name']
-            ORG = "ORG:"
-            if "," in u['name']:
-                ORG = u['name'].split(",")[-1].strip()
-            name = u['name'].replace("," + ORG, "")
-            Nraw = (" " + name).split(" ")
-            N = "N:"
-            for i in order:
+        if ".vcf" in fileName:
+            order = [3, 1, 2, 0]
+            for u in data:
+                FN = "FN:" + u['name']
+                ORG = "ORG:"
+                if "," in u['name']:
+                    ORG = u['name'].split(",")[-1].strip()
+                name = u['name'].replace("," + ORG, "")
+                Nraw = (" " + name).split(" ")
+                N = "N:"
+                for i in order:
+                    try:
+                        N += Nraw[i]
+                    except:
+                        pass
+                    N += ";"
+                N += ORG.split(":")[-1]
+                TEL = []
+                for i in range(0, len(u['phone'])):
+                    num = u['phone'][i]
+                    t = "TEL"
+                    if len(num) == 13:
+                        t += ";CELL"
+                    elif len(num) > 13:
+                        t += ";HOME"
+                    if i == 0:
+                        t += ";PREF"
+                    t += ":" + num
+                    TEL.append(t)
+
+                BDAY = ""
                 try:
-                    N += Nraw[i]
+                    BDAY = "BDAY:" + u['dob'][0]
                 except:
                     pass
-                N += ";"
-            N += ORG.split(":")[-1]
-            TEL = []
-            for i in range(0, len(u['phone'])):
-                num = u['phone'][i]
-                t = "TEL"
-                if len(num) == 13:
-                    t += ";CELL"
-                elif len(num) > 13:
-                    t += ";HOME"
-                if i == 0:
-                    t += ";PREF"
-                t += ":" + num
-                TEL.append(t)
 
-            BDAY = ""
-            try:
-                BDAY = "BDAY:" + u['dob'][0]
-            except:
+                EMAIL = []
+                for em in u['email']:
+                    EMAIL.append("EMAIL:" + em)
+
+                URL = []
+                for ur in u['url']:
+                    URL.append("URL:" + ur)
+
+                PHOTO = []
+                for ph in u['photo']:
+                    phtxt = "PHOTO;ENCODING=BASE64;JPEG:"
+                    b64 = base64.b64encode(open(ph, "rb").read())
+                    phtxt += b64[0:47] + "\n"
+                    b64 = "".join(b64[47:])
+                    while True:
+                        phtxt += " " + b64[0:73] + "\n"
+                        b64 = "".join(b64[73:])
+                        if len(b64) < 73:
+                            phtxt += " " + b64
+                            break
+                    PHOTO.append(phtxt)
+
+                ADR = ""
+                if len(u['addr']) > 2:
+                    ADR = "ADR:;;" + u['addr'].replace("\n", ", ") + ";;;;"
+
+                details = [i for i in
+                           [N, FN, "\n".join(TEL), BDAY, "\n".join(EMAIL), "\n".join(URL), ADR, "\n".join(PHOTO)]
+                           if len(i) > 3]
+
+                vcf = "\nBEGIN:VCARD\nVERSION:2.1\n"
+                vcf += "\n".join(details)
+                vcf += "\n\nEND:VCARD\n"
+                op.write(vcf)
+            else:
                 pass
-
-            EMAIL = []
-            for em in u['email']:
-                EMAIL.append("EMAIL:" + em)
-
-            URL = []
-            for ur in u['url']:
-                URL.append("URL:" + ur)
-
-            PHOTO = []
-            for ph in u['photo']:
-                phtxt = "PHOTO;ENCODING=BASE64;JPEG:"
-                b64 = base64.b64encode(open(ph, "rb").read())
-                phtxt += b64[0:47] + "\n"
-                b64 = "".join(b64[47:])
-                while True:
-                    phtxt += " " + b64[0:73] + "\n"
-                    b64 = "".join(b64[73:])
-                    if len(b64) < 73:
-                        phtxt += " " + b64
-                        break
-                PHOTO.append(phtxt)
-
-            ADR = ""
-            if len(u['addr']) > 2:
-                ADR = "ADR:;;" + u['addr'].replace("\n", ", ") + ";;;;"
-
-            details = [N, FN, "\n".join(TEL), BDAY, "\n".join(EMAIL), "\n".join(URL), ADR, "\n".join(PHOTO)]
-
-            vcf = "\nBEGIN:VCARD\nVERSION:2.1\n"
-            vcf += "\n".join(details)
-            vcf += "\n\nEND:VCARD\n"
-            print vcf

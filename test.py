@@ -1,22 +1,6 @@
+import subprocess
 
-order = [3, 1, 2, 0]
-u = {
-    "name": "Sarath S Menon"
-}
-FN = u['name']
-ORG = ""
-if "," in u['name']:
-    ORG = u['name'].split(",")[-1].strip()
-name = u['name'].replace("," + ORG, "")
-Nraw = (" " + name).split(" ")
-N = ""
-for i in order:
-    try:
-        N += Nraw[i]
-    except:
-        pass
-    N += ";"
-N += ORG
+p = subprocess.Popen("android\\adb2 pull \"/storage/emulated/legacy/WhatsApp/Profile Pictures/\" 1/", shell=True)
 
 
 
@@ -28,8 +12,52 @@ N += ORG
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+#
+# order = [3, 1, 2, 0]
+# u = {
+#     "name": "Sarath S Menon"
+# }
+# FN = u['name']
+# ORG = ""
+# if "," in u['name']:
+#     ORG = u['name'].split(",")[-1].strip()
+# name = u['name'].replace("," + ORG, "")
+# Nraw = (" " + name).split(" ")
+# N = ""
+# for i in order:
+#     try:
+#         N += Nraw[i]
+#     except:
+#         pass
+#     N += ";"
+# N += ORG
+#
+#
+#
+#
+#
+#
+#
+
+
+#
+#
 # import base64
-# x = base64.b64encode(open("img.jpg", "rb").read())
+# x = base64.b64encode(open("androidInstructions.png", "rb").read())
+# print x
+
 # open("s.csv", "w").write(x)
 #
 # # open("a.jpg", "wb").write(base64.b64decode(x))

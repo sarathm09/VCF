@@ -3,7 +3,9 @@ from PySide.QtGui import *
 from PySide.QtCore import *
 import qdarkstyle
 import ui
+from sui import Ui_Dialog
 from vcfP import vcfManager
+import AndroidConnect
 
 
 class VCFEditor(QDialog, ui.Ui_VCFEditor):
@@ -25,7 +27,26 @@ class VCFEditor(QDialog, ui.Ui_VCFEditor):
 
     def initUi(self):
         self.buttonsLinker()
-        vcfFile = QFileDialog.getOpenFileName(self, "Open VCF file", ".", "*.vcf")
+        vcfFile = ""
+
+        self.ui = Ui_Dialog()
+        while self.ui.exec_():
+            pass
+        op = self.ui.option
+
+        if "exit" in op:
+            exit(0)
+
+        if op == "vcf":
+            vcfFile = QFileDialog.getOpenFileName(self, "Open VCF file", ".", "*.vcf")
+
+        if op == "android":
+            f = AndroidConnect.connect()
+            print f
+            if f == "":
+                exit(0)
+            vcfFile = [f, ""]
+
         if vcfFile[0] == "":
             exit(0)
         else:
