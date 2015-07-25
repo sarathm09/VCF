@@ -1,0 +1,9 @@
+('D:\\2015\\July\\VCF\\src\\dist\\main.exe',
+ True,
+ False,
+ None,
+ None,
+ [],
+ None,
+ False,
+ 1437847591L)

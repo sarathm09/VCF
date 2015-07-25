@@ -25,11 +25,14 @@ class Ui_Dialog(QtGui.QDialog):
 
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         self.setStyleSheet(qdarkstyle.load_stylesheet())
+
+        self.label_3.clear()
+
+        self.label_3.setPixmap(QtGui.QPixmap(QtGui.QImage.fromData(base64.b64decode(self.imgData))))
         self.show()
         self.closeBtn.setFocus()
 
     def go(self):
-        self.logBox.append("")
         d = QtGui.QMessageBox.information(self, "Please Wait...",
                                           "Connecting and collecting data... \n"
                                           "Please wait as this may take a few minutes...\n"
@@ -51,12 +54,14 @@ class Ui_Dialog(QtGui.QDialog):
 
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(942, 618)
+        Dialog.resize(568, 501)
         self.verticalLayout = QtGui.QVBoxLayout(Dialog)
+        self.verticalLayout.setSpacing(3)
+        self.verticalLayout.setContentsMargins(3, 3, 3, 3)
         self.verticalLayout.setObjectName("verticalLayout")
         self.verticalLayout_2 = QtGui.QVBoxLayout()
         self.verticalLayout_2.setSpacing(3)
-        self.verticalLayout_2.setContentsMargins(20, 20, 20, 0)
+        self.verticalLayout_2.setContentsMargins(20, 10, 20, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.label = QtGui.QLabel(Dialog)
         font = QtGui.QFont()
@@ -70,6 +75,8 @@ class Ui_Dialog(QtGui.QDialog):
         self.label_2.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_2.addWidget(self.label_2)
+        self.verticalLayout_2.setStretch(0, 2)
+        self.verticalLayout_2.setStretch(1, 1)
         self.verticalLayout.addLayout(self.verticalLayout_2)
         self.stack = QtGui.QStackedWidget(Dialog)
         self.stack.setObjectName("stack")
@@ -108,20 +115,15 @@ class Ui_Dialog(QtGui.QDialog):
         self.page_2.setObjectName("page_2")
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.page_2)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.verticalLayout_5 = QtGui.QVBoxLayout()
+        self.verticalLayout_5.setSpacing(3)
+        self.verticalLayout_5.setContentsMargins(0, -1, -1, -1)
+        self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.label_3 = QtGui.QLabel(self.page_2)
         self.label_3.setText("")
-        self.label_3.setPixmap(QtGui.QPixmap(QtGui.QImage.fromData(base64.b64decode(self.imgData))))
         self.label_3.setScaledContents(True)
         self.label_3.setObjectName("label_3")
-        self.horizontalLayout_2.addWidget(self.label_3)
-        self.verticalLayout_4 = QtGui.QVBoxLayout()
-        self.verticalLayout_4.setSpacing(3)
-        self.verticalLayout_4.setContentsMargins(0, -1, -1, -1)
-        self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.logBox = QtGui.QTextBrowser(self.page_2)
-        self.logBox.setMinimumSize(QtCore.QSize(200, 0))
-        self.logBox.setObjectName("logBox")
-        self.verticalLayout_4.addWidget(self.logBox)
+        self.verticalLayout_5.addWidget(self.label_3)
         self.goBtn = QtGui.QPushButton(self.page_2)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
@@ -129,11 +131,10 @@ class Ui_Dialog(QtGui.QDialog):
         sizePolicy.setHeightForWidth(self.goBtn.sizePolicy().hasHeightForWidth())
         self.goBtn.setSizePolicy(sizePolicy)
         self.goBtn.setObjectName("goBtn")
-        self.verticalLayout_4.addWidget(self.goBtn)
-        self.verticalLayout_4.setStretch(0, 3)
-        self.verticalLayout_4.setStretch(1, 1)
-        self.horizontalLayout_2.addLayout(self.verticalLayout_4)
-        self.horizontalLayout_2.setStretch(0, 3)
+        self.verticalLayout_5.addWidget(self.goBtn)
+        self.verticalLayout_5.setStretch(0, 5)
+        self.verticalLayout_5.setStretch(1, 1)
+        self.horizontalLayout_2.addLayout(self.verticalLayout_5)
         self.stack.addWidget(self.page_2)
         self.verticalLayout.addWidget(self.stack)
         self.closeBtn = QtGui.QPushButton(Dialog)
@@ -147,8 +148,8 @@ class Ui_Dialog(QtGui.QDialog):
         self.closeBtn.setFont(font)
         self.closeBtn.setObjectName("closeBtn")
         self.verticalLayout.addWidget(self.closeBtn)
-        self.verticalLayout.setStretch(0, 2)
-        self.verticalLayout.setStretch(1, 5)
+        self.verticalLayout.setStretch(0, 1)
+        self.verticalLayout.setStretch(1, 7)
         self.verticalLayout.setStretch(2, 1)
 
         self.retranslateUi(Dialog)
@@ -156,26 +157,14 @@ class Ui_Dialog(QtGui.QDialog):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(
-            QtGui.QApplication.translate("Dialog", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
+        Dialog.setWindowTitle(QtGui.QApplication.translate("Dialog", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(
             QtGui.QApplication.translate("Dialog", "VCF editor v1.0", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("Dialog", "By T90", None, QtGui.QApplication.UnicodeUTF8))
-        self.androidBtn.setText(QtGui.QApplication.translate("Dialog", "Import from Android phone", None,
-                                                             QtGui.QApplication.UnicodeUTF8))
+        self.androidBtn.setText(
+            QtGui.QApplication.translate("Dialog", "Import from Android phone", None, QtGui.QApplication.UnicodeUTF8))
         self.vcfBtn.setText(
             QtGui.QApplication.translate("Dialog", "Import from .vcf file", None, QtGui.QApplication.UnicodeUTF8))
-        self.logBox.setHtml(QtGui.QApplication.translate("Dialog",
-                            "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-                            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\np, li { "
-                            "white-space: pre-wrap; }\n</style></head><body style=\" font-family:\'MS Shell Dlg 2\'; "
-                            "font-size:8.25pt; font-weight:400; font-style:normal;\">\n<p style=\" margin-top:0px; "
-                            "margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"
-                            "\"><span style=\" font-size:8pt;\">Disconnect your phone, Follow the instructions as in "
-                            "image and then click GO</span></p>\n<p style=\"-qt-paragraph-type:empty; margin-top:0px; "
-                            "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; "
-                            "margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body>"
-                            "</html>", None, QtGui.QApplication.UnicodeUTF8))
         self.goBtn.setText(QtGui.QApplication.translate("Dialog", "GO", None, QtGui.QApplication.UnicodeUTF8))
         self.closeBtn.setText(QtGui.QApplication.translate("Dialog", "Close", None, QtGui.QApplication.UnicodeUTF8))
 

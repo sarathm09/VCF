@@ -29,6 +29,23 @@ class vcfManager:
     def __init__(self):
         pass
 
+    def fb(self, data):
+        # Extract images from FB
+        if data['name'] != "" and len(data['email']) != 0:
+            for u in data['email']:
+                try:
+                    te = "https://www.facebook.com/public?query=" + u
+                    x = urllib2.urlopen(te).read()
+                    fid = re.findall("[0-9]+_([0-9]+)_[0-9]+", x)
+                    if len(fid) > 0:
+                        data['url'].append("https://www.facebook.com/" + fid[0])
+                        bs = BeautifulSoup(urllib2.urlopen("https://www.facebook.com/photo.php?fbid=" + fid[0]).read())
+                        pUrl = bs.find("img", {"id": "fbPhotoImage"})['src']
+                        urllib.urlretrieve(pUrl, "pics/" + data['name'] + ".jpg")
+                except:
+                    print "Error: " + data['name']
+        return data
+
     def parseVCF(self, file):
         self.vcfdata = file.read()
         self.vcfs = self.vcfdata.split("END:VCARD")
@@ -85,35 +102,22 @@ class vcfManager:
             for adr in raw_adr:
                 data['addr'] = adr
 
-            # Extract images from FB
-            # if data['name'] != "" and len(data['email']) != 0:
-            #     for u in data['email']:
-            #         try:
-            #             te = "https://www.facebook.com/public?query=" + u
-            #             x = urllib2.urlopen(te).read()
-            #             fid = re.findall("[0-9]+_([0-9]+)_[0-9]+", x)
-            #             if len(fid) > 0:
-            #                 print data['name'] + ":\thttps://www.facebook.com/photo.php?fbid=" + fid[0]
-            #                 bs = BeautifulSoup(urllib2.urlopen("https://www.facebook.com/photo.php?fbid=" + fid[0]).read())
-            #                 pUrl = bs.find("img", {"id": "fbPhotoImage"})['src']
-            #                 urllib.urlretrieve(pUrl, "pics/" + data['name']+".jpg")
-            #         except:
-            #             print "Error: " + data['name']
 
             # Extract Images
             raw_images = re.findall("^PHOTO;ENCODING=BASE64;([^\n]*)",
                                     vcf.replace("\n\n", "~~`@`~~").replace("\n ", "").replace("~~`@`~~", "\n"),
                                     re.MULTILINE)
-            # if len(raw_images) > 0:
-            #     for img in raw_images:
-            #         ext = ".jpg" if "JPEG" in img else ""
-            #         ext = ".png" if "PNG" in img else ext
-            #         f_name = "pics/" + data['name'] + ext
-            #         tn = 0
-            #         while os.path.exists("pics/" + f_name):
-            #             f_name = "pics/" + data['name'] + "_" + str(tn) + ext
-            #             tn += 1
-            #         open(f_name, "wb").write(base64.b64decode(img.split(":")[1]))
+
+            if len(raw_images) > 0:
+                for img in raw_images:
+                    ext = ".jpg" if "JPEG" in img else ""
+                    ext = ".png" if "PNG" in img else ext
+                    f_name = "pics/" + data['name'] + ext
+                    tn = 0
+                    while os.path.exists("pics/" + f_name):
+                        f_name = "pics/" + data['name'] + "_" + str(tn) + ext
+                        tn += 1
+                    open(f_name, "wb").write(base64.b64decode(img.split(":")[1]))
 
             imgs = os.listdir("pics/")
             for img in imgs:
